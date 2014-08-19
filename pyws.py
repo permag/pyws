@@ -13,25 +13,21 @@ class WSHandler(BaseHTTPRequestHandler):
             self.path = 'index.html'
 
         try:
-            send_reply = False
+            send_reply = True
             if self.path.endswith('.html') or self.path.endswith('.htm'):
                 mime_type = 'text/html'
-                send_reply = True
             elif self.path.endswith('.jpg'):
                 mime_type = 'image/jpg'
-                send_reply = True
             elif self.path.endswith('.png'):
                 mime_type = 'image/png'
-                send_reply = True
             elif self.path.endswith('.gif'):
                 mime_type = 'image/gif'
-                send_reply = True
             elif self.path.endswith('.js'):
                 mime_type = 'application/javascript'
-                send_reply = True
             elif self.path.endswith('.css'):
                 mime_type = 'text/css'
-                send_reply = True
+            else:
+                send_reply = False
 
             if send_reply:
                 f = open(curdir + sep + WWW_PATH + self.path)

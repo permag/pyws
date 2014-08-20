@@ -30,12 +30,11 @@ class WSHandler(BaseHTTPRequestHandler):
                 send_reply = False
 
             if send_reply:
-                f = open(curdir + sep + WWW_PATH + self.path)
-                self.send_response(200)
-                self.send_header('Content-type', mime_type)
-                self.end_headers()
-                self.wfile.write(f.read())
-                f.close()
+                with open(curdir + sep + WWW_PATH + self.path) as f:
+                    self.send_response(200)
+                    self.send_header('Content-type', mime_type)
+                    self.end_headers()
+                    self.wfile.write(f.read())
 
         except IOError:
             self.send_error(404, 'File Not Found: {}'.format(self.path))
@@ -50,10 +49,11 @@ def main():
     try:
         server = HTTPServer(('', port_number), WSHandler)
         print('Web Server started on port {}'.format(port_number))
+        print('Browse to: http://127.0.0.1:{}'.format(port_number))
         server.serve_forever()
 
     except KeyboardInterrupt:
-        print('^C received, shutting down the web server.')
+        print('\nUser closed connection. Server is shutting down.')
         server.socket.close()
 
 
